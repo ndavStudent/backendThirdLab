@@ -9,25 +9,29 @@ import java.util.List;
 @RequestMapping(path = "api/v1/student")
 public class StudentController {
     private final StudentService studentService;
+    private final StudentToDTO studentToDTO;
+    private final StudentIdToIdDTO studentIdToIdDTO;
 
     @Autowired
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, StudentToDTO studentToDTO, StudentIdToIdDTO studentIdToIdDTO) {
         this.studentService = studentService;
+        this.studentToDTO = studentToDTO;
+        this.studentIdToIdDTO = studentIdToIdDTO;
     }
 
     @GetMapping
-    public List<StudentDTO> getStudents(){
+    public List<StudentDTO> getStudents() {
         return studentService.getStudents();
     }
 
     @PostMapping
-    public StudentDTO registerNewStudent(@RequestBody Student student){
-        return studentService.addNewStudent(student);
+    public StudentDTO registerNewStudent(@RequestBody Student student) {
+        return studentService.addNewStudent(studentToDTO.studentToDTO(student));
     }
 
     @DeleteMapping(path = "{studentId}")
     public void deleteStudent(@PathVariable("studentId") Long studentId) {
-        studentService.deleteStudent(studentId);
+        studentService.deleteStudent(studentIdToIdDTO.studentIdToDTO(studentId));
 
     }
 
@@ -36,8 +40,7 @@ public class StudentController {
             @PathVariable("studentId") Long studentId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email) {
-        studentService.updateStudent(studentId, name, email);
-        return null;
+        return studentService.updateStudent(studentId, name, email);
     }
 
 }

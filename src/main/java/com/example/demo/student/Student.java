@@ -1,6 +1,8 @@
 package com.example.demo.student;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -8,6 +10,7 @@ import java.time.Period;
 @Entity
 @Table
 public class Student {
+    @Getter
     @Id
     @SequenceGenerator(
             name = "student_sequence",
@@ -21,8 +24,14 @@ public class Student {
     )
     private Long id;
 
+    @Getter
+    @Setter
     private String name;
+    @Getter
+    @Setter
     private String email;
+    @Getter
+    @Setter
     private LocalDate dob;
     @Transient
     private Integer age;
@@ -48,37 +57,10 @@ public class Student {
         this.dob = dob;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public LocalDate getDob() {
-        return dob;
-    }
-
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
-    }
 
     public Integer getAge() {
         return Period.between(this.dob, LocalDate.now()).getYears();
