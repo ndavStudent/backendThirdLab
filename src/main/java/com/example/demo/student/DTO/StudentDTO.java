@@ -1,6 +1,4 @@
-package com.example.demo.student;
-
-import org.springframework.context.annotation.Bean;
+package com.example.demo.student.DTO;
 
 import java.time.LocalDate;
 

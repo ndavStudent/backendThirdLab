@@ -1,5 +1,12 @@
-package com.example.demo.student;
+package com.example.demo.student.DAO;
 
+import com.example.demo.student.DTO.StudentDTO;
+import com.example.demo.student.DTO.StudentDescDTO;
+import com.example.demo.student.DTO.StudentRenewDTO;
+import com.example.demo.student.Services.StudentPutUpdateToDTO;
+import com.example.demo.student.entity.Student;
+import com.example.demo.student.repositories.StudentRepository;
+import com.example.demo.student.Services.StudentToDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
@@ -37,7 +44,10 @@ public class StudentDAO {
     }
 
     @Transactional
-    public StudentDTO updateStudent(Long studentId, String name, String email) {
+    public StudentDTO updateStudent(StudentDescDTO studentDescDTO) {
+        Long studentId = studentDescDTO.id();
+        String name = studentDescDTO.name();
+        String email = studentDescDTO.email();
         Student student = studentRepository.findById(studentId).orElseThrow(() ->
                 new IllegalStateException("student with id " + studentId + "does not exists"));
         if (name != null && !name.isEmpty() && !Objects.equals(student.getName(), name)) {
@@ -61,5 +71,24 @@ public class StudentDAO {
             throw new IllegalStateException("student with id " + studentId + " does not exists");
         }
         studentRepository.deleteById(studentId);
+    }
+
+    @Transactional
+    public StudentDTO putUpdateStudent(Long studentId, StudentRenewDTO studentRenewDTO){
+        Student student = studentRepository.findById(studentId).orElseThrow(() ->
+                new IllegalStateException("student with id " + studentId + "does not exists"));
+        if (studentRenewDTO.name() == null){
+            throw new IllegalStateException("name must be not null value");
+        }
+        if (studentRenewDTO.email() == null){
+            throw new IllegalStateException("email must be not null value");
+        }
+        if (studentRenewDTO.dob() == null){
+            throw new IllegalStateException("dob must be not null value");
+        }
+        student.setName(studentRenewDTO.name());
+        student.setEmail(studentRenewDTO.email());
+        student.setDob(studentRenewDTO.dob());
+        return studentToDTO.studentToDTO(new Student(studentId, studentRenewDTO.name(), studentRenewDTO.email(), studentRenewDTO.dob()));
     }
 }

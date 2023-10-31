@@ -1,5 +1,11 @@
-package com.example.demo.student;
+package com.example.demo.student.Services;
 
+import com.example.demo.student.DAO.StudentDAO;
+import com.example.demo.student.DTO.StudentDTO;
+import com.example.demo.student.DTO.StudentDescDTO;
+import com.example.demo.student.DTO.StudentIdDTO;
+import com.example.demo.student.DTO.StudentRenewDTO;
+import com.example.demo.student.Services.StudentDTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +19,7 @@ public class StudentService {
     private final StudentDTOMapper studentDTOMapper;
 
     @Autowired
-    public StudentService(StudentRepository studentRepository, StudentDAO studentDAO) {
+    public StudentService(StudentDAO studentDAO) {
         this.studentDAO = studentDAO;
         studentDTOMapper = new StudentDTOMapper();
     }
@@ -34,7 +40,11 @@ public class StudentService {
     }
 
 
-    public StudentDTO updateStudent(Long studentId, String name, String email) {
-        return studentDAO.updateStudent(studentId, name, email);
+    public StudentDTO updateStudent(StudentDescDTO studentDescDTO) {
+        return studentDAO.updateStudent(studentDescDTO);
+    }
+
+    public StudentDTO putUpdateStudent(Long studentId, StudentRenewDTO studentRenewDTO){
+        return studentDAO.putUpdateStudent(studentId, studentRenewDTO);
     }
 }

@@ -1,5 +1,9 @@
-package com.example.demo.student;
+package com.example.demo.student.Controllers;
 
+import com.example.demo.student.DTO.StudentDTO;
+import com.example.demo.student.DTO.StudentRenewDTO;
+import com.example.demo.student.Services.*;
+import com.example.demo.student.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,12 +15,14 @@ public class StudentController {
     private final StudentService studentService;
     private final StudentToDTO studentToDTO;
     private final StudentIdToIdDTO studentIdToIdDTO;
+    private final StudentDescToDTO studentDescToDTO;
 
     @Autowired
-    public StudentController(StudentService studentService, StudentToDTO studentToDTO, StudentIdToIdDTO studentIdToIdDTO) {
+    public StudentController(StudentService studentService, StudentToDTO studentToDTO, StudentIdToIdDTO studentIdToIdDTO, StudentDescToDTO studentDescToDTO) {
         this.studentService = studentService;
         this.studentToDTO = studentToDTO;
         this.studentIdToIdDTO = studentIdToIdDTO;
+        this.studentDescToDTO = studentDescToDTO;
     }
 
     @GetMapping
@@ -35,12 +41,18 @@ public class StudentController {
 
     }
 
-    @PutMapping(path = "{studentId}")
-    public StudentDTO updateStudent(
+    @PatchMapping(path = "{studentId}")
+    public StudentDTO patchUpdateStudent(
             @PathVariable("studentId") Long studentId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email) {
-        return studentService.updateStudent(studentId, name, email);
+        return studentService.updateStudent(studentDescToDTO.studentDescToDTO(studentId, name, email));
+    }
+    @PutMapping(path = "{studentId}")
+    public StudentDTO putUpdateStudent(
+            @RequestBody StudentRenewDTO studentNewDTO,
+            @PathVariable("studentId") Long studentId){
+        return studentService.putUpdateStudent(studentId, studentNewDTO);
     }
 
 }

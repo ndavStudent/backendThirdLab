@@ -1,5 +1,6 @@
-package com.example.demo.student;
+package com.example.demo.student.Services;
 
+import com.example.demo.student.DTO.StudentIdDTO;
 import org.springframework.stereotype.Service;
 
 @Service

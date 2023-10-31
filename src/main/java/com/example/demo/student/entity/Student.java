@@ -1,4 +1,4 @@
-package com.example.demo.student;
+package com.example.demo.student.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -34,6 +34,7 @@ public class Student {
     @Setter
     private LocalDate dob;
     @Transient
+    @Setter
     private Integer age;
 
     public Student() {
@@ -57,18 +58,11 @@ public class Student {
         this.dob = dob;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
 
     public Integer getAge() {
         return Period.between(this.dob, LocalDate.now()).getYears();
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
 
     @Override
     public String toString() {

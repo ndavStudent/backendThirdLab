@@ -1,11 +1,12 @@
-package com.example.demo.student;
+package com.example.demo.student.Configs;
 
+import com.example.demo.student.entity.Student;
+import com.example.demo.student.repositories.StudentRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 
 import static java.time.Month.JANUARY;

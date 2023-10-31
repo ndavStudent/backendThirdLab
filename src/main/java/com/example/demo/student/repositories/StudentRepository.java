@@ -1,5 +1,6 @@
-package com.example.demo.student;
+package com.example.demo.student.repositories;
 
+import com.example.demo.student.entity.Student;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
