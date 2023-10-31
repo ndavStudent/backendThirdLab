@@ -7,28 +7,31 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final StudentDAO studentDAO;
+    private final StudentDTOMapper studentDTOMapper;
 
     @Autowired
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository, StudentDAO studentDAO) {
         this.studentRepository = studentRepository;
+        this.studentDAO = studentDAO;
+        studentDTOMapper = new StudentDTOMapper();
     }
 
 
-    public List<Student> getStudents() {
-        return studentRepository.findAll();
+    public List<StudentDTO> getStudents() {
+        return studentDAO.getAllStudents().map(studentDTOMapper)
+                .collect(Collectors.toList());
     }
 
-    public void addNewStudent(Student student) {
-        Optional<Student> studentOptional = studentRepository.findStudentByEmail(student.getEmail());
-        if (studentOptional.isPresent()) {
-            throw new IllegalStateException("email taken");
-        }
-        studentRepository.save(student);
+
+    public StudentDTO addNewStudent(Student student) {
+        return studentDAO.addNewStudent(student);
     }
 
     public void deleteStudent(Long studentId) {
@@ -48,7 +51,7 @@ public class StudentService {
             student.setName(name);
         }
 
-        if (email != null && !email.isEmpty() && !Objects.equals(student.getEmail(), email)){
+        if (email != null && !email.isEmpty() && !Objects.equals(student.getEmail(), email)) {
             Optional<Student> studentOptional = studentRepository.findStudentByEmail(email);
             if (studentOptional.isPresent()) {
                 throw new IllegalStateException("email taken");

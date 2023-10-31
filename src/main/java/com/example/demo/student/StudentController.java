@@ -16,13 +16,13 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getStudents(){
+    public List<StudentDTO> getStudents(){
         return studentService.getStudents();
     }
 
     @PostMapping
-    public void registerNewStudent(@RequestBody Student student){
-        studentService.addNewStudent(student);
+    public StudentDTO registerNewStudent(@RequestBody Student student){
+        return studentService.addNewStudent(student);
     }
 
     @DeleteMapping(path = "{studentId}")
@@ -32,11 +32,12 @@ public class StudentController {
     }
 
     @PutMapping(path = "{studentId}")
-    public void updateStudent(
+    public StudentDTO updateStudent(
             @PathVariable("studentId") Long studentId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email) {
         studentService.updateStudent(studentId, name, email);
+        return null;
     }
 
 }
